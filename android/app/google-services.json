@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "523256204672",
+    "firebase_url": "https://recipeta.firebaseio.com",
+    "project_id": "recipeta",
+    "storage_bucket": "recipeta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523256204672:android:41761d2aac545630734565",
+        "android_client_info": {
+          "package_name": "com.recipeta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523256204672-r84egr6miqs79ncrq4sn5rspddtp47e9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1zWdnFHqMxcjdelIbT-6Dxzby721RBwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523256204672-r84egr6miqs79ncrq4sn5rspddtp47e9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
