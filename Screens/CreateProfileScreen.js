@@ -12,7 +12,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 const CreateProfileScreen= ({navigation}) => {
 
-  const [image,setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
+  const [image,setImage] = useState('https://avatars.dicebear.com/api/:sprites/:seed.svg');
   // const {photo}=this.state;
 
   const {colors}=useTheme();
@@ -95,7 +95,7 @@ const CreateProfileScreen= ({navigation}) => {
           <View style={[styles.header,{alignItems:'center'}]}>
       <TouchableOpacity onPress={()=>bs.current.snapTo(0)}>
           <View style={{
-            height:100, width:100, borderRadius:15, justifyContent:'center',alignItems:'center',paddingBottom:10
+            height:100, width:100, borderRadius:20, borderWidth:2,backgroundColor:'#333333', justifyContent:'center',alignItems:'center',paddingBottom:10
           }}>
           
             <ImageBackground source={{uri:image,}} 
@@ -114,9 +114,6 @@ const CreateProfileScreen= ({navigation}) => {
              
           </View>
         </TouchableOpacity>
-                <Text style={{marginTop:10, fontSize:18 , color:'#333333', fontWeight:'bold'}} >
-                  Mahinour Magdi
-                </Text>
 
       </View>
       
@@ -140,32 +137,43 @@ const CreateProfileScreen= ({navigation}) => {
       <View style={{...StyleSheet.absoluteFillObject,backgroundColor:'white',borderTopLeftRadius:75,borderBottomRightRadius:75}}>
           </View>
           <View style={{flex:1, backgroundColor:'#333333', borderTopLeftRadius:75, paddingTop:45,borderBottomRightRadius:75, paddingHorizontal:20, paddingVertical:20}}>
-          <View style={styles.action}>
+          <View style={[styles.action, {width:'98%'}]}>
                   <FontAwesome name='user-o' color={'pink'} size={20} style={{marginTop:12, paddingEnd:10}}/>
                   <TextInput 
-                  placeholder='First Name'
+                  placeholder='Full Name'
                   placeholderTextColor='#666666'
                   style={[styles.TextInput,{color:'white'},{width:335,
                   }]}
                   autoCorrect={false}/>
                 </View>
 
-                <View style={styles.action}>
-                  <FontAwesome name='user-o' color={'pink'} size={20} style={{marginTop:12, paddingEnd:10}}/>
+                <View style={[styles.action, {width:'98%'}]}>
+                  <FontAwesome name='vcard-o' color={'pink'} size={20} style={{marginTop:12, paddingEnd:10}}/>
                   <TextInput 
-                  placeholder='Last Name'
+                  placeholder='Title'
                   placeholderTextColor='#666666'
                   style={[styles.TextInput,{ color:'white'},{width:335,
                   }]}
                   autoCorrect={false}/>
                 </View>
 
-                <View style={styles.action}>
-                  <FontAwesome name='envelope-o' color={'pink'} size={20} style={{marginTop:12, paddingEnd:10}}/>
+                <View style={[styles.action, {width:'98%'}]}>
+                  <FontAwesome name='mobile-phone' color={'pink'} size={30} style={{marginTop:12, paddingEnd:10}}/>
                   <TextInput 
-                  placeholder='Email'
+                  placeholder='Phone Number'
                   placeholderTextColor='#666666'
-                  keyboardType='email-address'
+                  keyboardType='decimal-pad'
+                  style={[styles.TextInput,{ color:'white'},{width:335,
+                  }]}
+                  autoCorrect={false}/>
+                </View>
+
+                <View style={[styles.action, {width:'98%'}]}>
+                  <FontAwesome name='align-left' color={'pink'} size={22} style={{marginTop:16, paddingEnd:10}}/>
+                  <TextInput 
+                  placeholder='Personal Blog'
+                  placeholderTextColor='#666666'
+                  keyboardType='decimal-pad'
                   style={[styles.TextInput,{ color:'white'},{width:335,
                   }]}
                   autoCorrect={false}/>
