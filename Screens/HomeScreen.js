@@ -85,7 +85,7 @@ const HomeScreen= ({navigation}) => {
       </TouchableOpacity>
 
 
-      <TouchableOpacity onPress={()=>{navigation.navigate('Details')}}>
+      <TouchableOpacity onPress={()=>{navigation.navigate('ScreenTwo')}}>
 
     <View style = {styles.card}>
     <View style={styles.cardImgWrapper}>
@@ -100,7 +100,7 @@ const HomeScreen= ({navigation}) => {
     </TouchableOpacity>
 
 
-    <TouchableOpacity onPress={()=>{navigation.navigate('Details')}}>
+    <TouchableOpacity onPress={()=>{navigation.navigate('ScreenThree')}}>
 
     <View style = {styles.card}>
     <View style={styles.cardImgWrapper}>
