@@ -6,13 +6,19 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationContainer} from '@react-navigation/native';
 import {AuthContext} from '../components/context';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-
+import auth from '@react-native-firebase/auth'; 
 import {useTheme} from '@react-navigation/native';
 
 
 export function DrawerContent (props){
 
-  const {colors} = useTheme();
+    const SignOut=()=>{
+        auth()
+  .signOut()
+  .then(props.navigation.navigate('SignInScreen'))
+    }
+
+    const {colors} = useTheme();
 
     const paperTheme = useTheme();
 
@@ -34,14 +40,14 @@ export function DrawerContent (props){
                 <View style = {styles.drawerContent}>
                     <View style ={styles.userInfoSection}> 
                         <View style = {{flexDirection:"row", marginTop:15}}>
-                        <TouchableOpacity onPress={()=> props.navigation.navigate('Profile')}>
+                        {/* <TouchableOpacity onPress={()=> props.navigation.navigate('Profile')}>
                             <Avatar.Image style={{marginTop:5}} size={50} 
                             source={require('../Images/Capture.png')} 
                             />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             <View style = {{marginLeft:15,flexDirection:'column'}}>
                                 <Title style={{ color: 'pink' }} >Mahinour Magdi</Title>
-                                <Caption style={{ color: 'pink' }} >@mahinour__</Caption>
+                                {/* <Caption style={{ color: 'pink' }} >@mahinour__</Caption> */}
                             </View>
                         </View>
                         {/* <TouchableOpacity onPress={()=>{props.navigation.navigate("Friends")}}>
@@ -217,7 +223,7 @@ export function DrawerContent (props){
                     />
                 )}
                 label = "Sign Out"
-                onPress={()=>{signOut()}}
+                onPress={()=>{SignOut()}}
                 />
            </Drawer.Section>
 
