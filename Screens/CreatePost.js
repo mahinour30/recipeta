@@ -9,8 +9,25 @@ import { color } from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 import ImagePicker from 'react-native-image-crop-picker';
+import firestore from '@react-native-firebase/firestore';
+import auth, { firebase } from '@react-native-firebase/auth';
+
+
 
 const CreatePost= ({navigation}) => {
+
+
+
+  const [data, setData] = React.useState({
+    title:'',
+    discreption:'',
+    ingredients:'',
+    recipe:'',
+    survings:'',
+    photo:'',
+    
+});
+
 
   const [image,setImage] = useState('https://avatars.dicebear.com/api/:sprites/:seed.svg');
   // const {photo}=this.state;
@@ -33,6 +50,58 @@ const CreatePost= ({navigation}) => {
 
       
   }
+   const Post= ()=>{
+    
+    firestore()
+    .collection('recipe')
+    .add({
+       title : data.title,
+       ingredients : data.ingredients,
+       recipe : data.recipe,
+       discreption : data.discreption,
+       photo : data.photo,
+       survings : data.survings,
+    })
+    .then(navigation.navigate('Home'))
+}
+
+
+const handleTitleChange=(val) =>{
+  setData({
+    ...data,
+    title:val,
+  });
+};
+
+const handleDescriptionChange=(val) =>{
+  setData({
+    ...data,
+    discreption:val,
+  });
+};
+
+const handleSurvingsChange=(val) =>{
+  setData({
+    ...data,
+    survings:val,
+  });
+};
+
+const handleIngredientsChange=(val) =>{
+  setData({
+    ...data,
+    ingredients:val,
+  });
+};
+const handleRecipeChange=(val) =>{
+  setData({
+    ...data,
+    recipe:val,
+  });
+};
+
+
+
 
   
   const takePhotoFromLibrary=()=>{
@@ -110,7 +179,9 @@ const CreatePost= ({navigation}) => {
                   placeholderTextColor='#666666'
                   style={[styles.TextInput,{color:'#333333'},{width:335,
                   }]}
-                  autoCorrect={false}/>
+                  autoCorrect={false}
+                  onChangeText = {(val) => handleTitleChange(val)}
+                  />
                 </View>
 
 
@@ -124,9 +195,26 @@ const CreatePost= ({navigation}) => {
                   placeholderTextColor='#666666'
                   style={[styles.TextInput,{ color:'#333333'},{width:335,
                   }]}
-                  autoCorrect={false}/>
+                  autoCorrect={false}
+                  onChangeText = {(val) => handleDescriptionChange(val)}
+                  />
                 </View>
 
+
+
+                <View style={[styles.action, {marginBottom:20}]}>
+                  <FontAwesome name='align-left' color={'#333333'} size={20} style={{marginTop:12, paddingEnd:10}}/>
+                  <TextInput
+                  numberOfLines={1}
+                  placeholder='Survings'
+                  placeholderTextColor='#666666'
+                  keyboardType='number-pad'
+                  style={[styles.TextInput,{ color:'#333333'},{width:335,
+                  }]}
+                  autoCorrect={false}
+                  onChangeText = {(val) => handleSurvingsChange(val)}
+                  />
+                </View>
 
 
 
@@ -140,7 +228,9 @@ const CreatePost= ({navigation}) => {
                   keyboardType='email-address'
                   style={[styles.TextInput,{ color:'#333333'},{width:335,
                   }]}
-                  autoCorrect={false}/>
+                  autoCorrect={false}
+                  onChangeText = {(val) => handleIngredientsChange(val)}
+                  />
                 </View>
 
 
@@ -156,7 +246,9 @@ const CreatePost= ({navigation}) => {
                   keyboardType='email-address'
                   style={[styles.TextInput,{ color:'#333333'},{width:335,
                   }]}
-                  autoCorrect={false}/>
+                  autoCorrect={false}
+                  onChangeText = {(val) => handleRecipeChange(val)}
+                  />
                 </View>
 
 
@@ -172,7 +264,7 @@ const CreatePost= ({navigation}) => {
           <View style={[styles.header,{alignItems:'center', borderTopLeftRadius:75, backgroundColor:'#333333'}]}>
       <TouchableOpacity onPress={()=>bs.current.snapTo(0)}>
           <View style={{
-            height:150, width:'100%', borderWidth:2,backgroundColor:'gray', borderRadius:15, justifyContent:'center',alignItems:'center',paddingBottom:30, marginVertical:30,
+            height:150, width:'100%', borderWidth:2,backgroundColor:'#333333', borderRadius:15, justifyContent:'center',alignItems:'center',paddingBottom:30, marginVertical:30,
           }}>
           
             <ImageBackground source={{uri:image,}} 
@@ -217,7 +309,7 @@ const CreatePost= ({navigation}) => {
           </View>
           <View style={{flex:1, backgroundColor:'pink', borderTopRRadius:75,borderTopLeftRadius:75,borderBottomLeftRadius:75,borderBottomRightRadius:75}}>
             <View style ={{paddingVertical:60, paddingHorizontal:35}}>
-               <TouchableOpacity style= {[styles.commandButton, {backgroundColor:'#333333'}]} onPress={() => navigation.navigate('Home')}>
+               <TouchableOpacity style= {[styles.commandButton, {backgroundColor:'#333333'}]} onPress={() =>Post()}>
                   <Text style= {{color:'pink',fontSize:17,
     fontWeight:'bold'}}>Submit</Text>
                 </TouchableOpacity>
