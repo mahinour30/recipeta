@@ -1,4 +1,4 @@
-import React , {useContext, useState}from 'react';
+import React , {useContext, useState, useEffect}from 'react';
 import {View,Text, StyleSheet,TextInput, Alert, Platform, TouchableOpacity, Dimensions, StatusBar} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,20 +7,76 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../components/context';
 import Users from './Users';
 import {useTheme} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { GoogleSignin } from '@react-native-community/google-signin';
+
 
 
 const SignInScreen= ({navigation}) => {
+
+  useEffect(()=>{
+    GoogleSignin.configure({
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+      webClientId: '523256204672-r84egr6miqs79ncrq4sn5rspddtp47e9.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      // hostedDomain: '', // specifies a hosted domain restriction
+      // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
+      forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+      // accountName: '', // [Android] specifies an account name on the device that should be used
+      // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+    });
+    
+
+  })
+
+
+
   const {colors} = useTheme();
 
 
   const [data, setData] = React.useState({
-      username:'',
+      email:'',
       password:'',
       check_textInputChange: false,
       secureTextEntry: true,
       isValidUser: true,
       isValidPassword:true,
   });
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+  
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+  
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+  
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+  
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
+
 
 
   const {signIn} = React.useContext(AuthContext);
@@ -29,14 +85,14 @@ const SignInScreen= ({navigation}) => {
       if (val.trim().length != 0 ){
         setData ({
           ...data,
-          username:val,
+          email:val,
           check_textInputChange:true,
           isValidUser:true,
         });
       } else {
         setData({
           ...data,
-          username:val,
+          email:val,
           check_textInputChange:false,
           isValidUser:false,
         })
@@ -101,29 +157,29 @@ const SignInScreen= ({navigation}) => {
     }
 
 
-    const loginHandle = (userName, password) =>{
+    const loginHandle = (email, password) =>{
       const foundUser = Users.filter( item => {
-        return userName == item.username 
+        return email == item.email 
         && password == item.password;
       });
 
 
-      if (data.username==0 || data.password==0){
+      if (data.email==0 || data.password==0){
         Alert.alert('Missing Input',
-         'Please provide username and password.',
+         'Please provide email and password.',
           [ {text:'Okay'}
         ]);
         return;
       }
       if (foundUser.length == 0){
         Alert.alert('Invalid User',
-         'Username or password is incorrect.',
+         'email or password is incorrect.',
           [ {text:'Okay'}
         ]);
         return;
       }
      
-      signIn(foundUser);
+      signIn(foundUser)
     }
 
   return (
@@ -169,7 +225,7 @@ const SignInScreen= ({navigation}) => {
         {data.isValidUser ? null :
 
          <Animatable.View animation ="fadeInLeft" duration={500}>        
-           <Text style ={styles.errorMsg}>Enter Email or username</Text>
+           <Text style ={styles.errorMsg}>Enter Email</Text>
            </Animatable.View>              
             }
              
@@ -229,7 +285,7 @@ const SignInScreen= ({navigation}) => {
                   <View style = {styles.button}> 
                   <TouchableOpacity 
                   style ={styles.signIn}
-                  onPress={()=>{loginHandle( data.username, data.password)}}>
+                  onPress={()=>{loginHandle( data.email, data.password)}}>
                   
                    <LinearGradient colors={['white', 'pink']} style={styles.signIn}>
                       <Text  color ='grey'>
@@ -271,7 +327,7 @@ const SignInScreen= ({navigation}) => {
                 <View style = {styles.buttonSocial}> 
                   <TouchableOpacity 
                   style ={styles.signIn}
-                  onPress={()=>{navigation.navigate()}}>
+                  onPress={()=>{onGoogleButtonPress()}}>
                   <View style={{flexDirection:'row',alignItems:'center'}}>
                      <Icon name='google' style={{flex:1, paddingLeft:20}} size={25} color='tomato'/>
                      <Text style={{flex:2.5,  color:'tomato'}}>
@@ -286,7 +342,7 @@ const SignInScreen= ({navigation}) => {
                   <View style = {styles.buttonSocial}> 
                   <TouchableOpacity 
                   style ={styles.signIn}
-                  onPress={()=>{navigation.navigate()}}>
+                  onPress={()=>{onFacebookButtonPress()}}>
                                           <View style={{flexDirection:'row',alignItems:'center'}}>
 
                         <Icon name='facebook' style={{flex:1, paddingLeft:20}} size={25} color='royalblue'/>
