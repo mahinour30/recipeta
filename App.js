@@ -29,6 +29,8 @@ import CreateProfile from './Screens/CreateProfileScreen';
 import OnboardingScreen from './Screens/Onboarding'
 import CreatePost from './Screens/CreatePost';
 import RootStack from './Screens/RootStackScreen';
+import ScreenTwo from './Screens/screen2';
+import ScreenThree from './Screens/screen3';
 
 
 
@@ -66,6 +68,8 @@ const CreateProfileStack = createStackNavigator();
 const AppStack = createStackNavigator();
 const CreatePostStack = createStackNavigator();
 const RootStackStack = createStackNavigator();
+const ScreenTwoStack = createStackNavigator();
+const ScreenThreeStack = createStackNavigator();
 
 
 
@@ -94,24 +98,29 @@ const HomeStackScreen = ({navigation}) =>{
     <HomeStack.Screen name="Recipeta" component={HomeScreen} options={{
       headerLeft:()=> (
         <View style = {{marginLeft:20,marginTop:8}}>
-          <TouchableOpacity onPress={()=> navigation.openDrawer()}>
+          {/* <TouchableOpacity onPress={()=> navigation.openDrawer()}>
         <Avatar.Image style={{marginTop:8}} size={35} 
         source={require('./Images/Capture.png')} 
          />
-        </TouchableOpacity>
+         
+        </TouchableOpacity> */}
         
+
+        <Icon.Button 
+        style = {{marginTop:5}}
+        name="ios-menu" 
+        size ={27} 
+        color= 'pink' 
+         backgroundColor =  {colors.background}       
+        onPress={()=> navigation.openDrawer()}/>
+
+
         </View>
       ),
 
       headerRight:()=> (
         <View style = {{marginRight:0,marginTop:8, flexDirection:'row'}}>
-        <Icon.Button 
-        style = {{marginTop:5}}
-        name="ios-search" 
-        size ={27} 
-        color= 'pink' 
-         backgroundColor =  {colors.background}       
-        onPress={()=> navigation.openDrawer()}/>
+       
 
 <Icon.Button 
         name="ios-add-circle" 
@@ -613,6 +622,64 @@ const RootStackStackScreen = ({navigation}) =>{
  </RootStackStack.Navigator>
 )};
 
+
+
+const ScreenTwoStackScreen = ({navigation}) =>{
+  const {colors} =useTheme();
+  return(
+
+  <ScreenTwoStack.Navigator 
+  screenOptions={{
+    headerShown: false
+  }}
+  >
+    <ScreenTwoStack.Screen name=" " component={ScreenTwo}
+    options={{
+      headerLeft:()=> (
+        <Icon.Button name="md-arrow-back-circle-outline" size ={25} color='red' 
+        backgroundColor = "transparent"
+        onPress={()=> 
+        navigation.goBack()}>
+
+        </Icon.Button>
+      )
+
+    }} />
+  
+  </ScreenTwoStack.Navigator>
+
+)};
+
+
+
+
+const ScreenThreeStackScreen = ({navigation}) =>{
+  const {colors} =useTheme();
+  return(
+
+  <ScreenThreeStack.Navigator 
+  screenOptions={{
+    headerShown: false
+  }}
+  >
+    <ScreenThreeStack.Screen name=" " component={ScreenThree}
+    options={{
+      headerLeft:()=> (
+        <Icon.Button name="md-arrow-back-circle-outline" size ={25} color='red' 
+        backgroundColor = "transparent"
+        onPress={()=> 
+        navigation.goBack()}>
+
+        </Icon.Button>
+      )
+
+    }} />
+  
+  </ScreenThreeStack.Navigator>
+
+)};
+
+
 const App =() =>{
 
   
@@ -846,6 +913,9 @@ const App =() =>{
           <Drawer.Screen name="FAQFeedback" component={FAQFeedbackStackScreen}/>
           <Drawer.Screen name="CreateProfile" component={CreateProfileStackScreen}/>
           <Drawer.Screen name="CreatePost" component={CreatePostStackScreen}/>
+          <Drawer.Screen name="ScreenTwo" component={ScreenTwoStackScreen} />
+          <Drawer.Screen name="ScreenThree" component={ScreenThreeStackScreen} />
+
 
 
 
