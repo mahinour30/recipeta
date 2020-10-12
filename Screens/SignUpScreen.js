@@ -1,25 +1,142 @@
-import React from 'react';
-import {View,Text, StyleSheet,TextInput, Platform, TouchableOpacity, Dimensions, StatusBar} from 'react-native';
+import React,{useEffect, useState} from 'react';
+import {View,Text, Alert,StyleSheet,TextInput, Platform, TouchableOpacity, Dimensions,ScrollView, StatusBar} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import {useTheme} from '@react-navigation/native';
+import auth, { firebase } from '@react-native-firebase/auth';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import firestore from '@react-native-firebase/firestore';
+
+
+
 
 
 const SignUpScreen= ({navigation}) => {
+
+  useEffect(()=>{
+    GoogleSignin.configure({
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+      webClientId: '523256204672-r84egr6miqs79ncrq4sn5rspddtp47e9.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      // hostedDomain: '', // specifies a hosted domain restriction
+      // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
+      forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+      // accountName: '', // [Android] specifies an account name on the device that should be used
+      // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+    });
+    
+
+  })
+
   const {colors} = useTheme();
+
 
   const [data, setData] = React.useState({
       email:'',
       password:'',
       confirm_password:'',
+      fullname:'',
+      phonenumber:'',
+      personalblog:'',
       check_textInputChange: false,
       secureTextEntry: true,
       confirm_secureTextEntry: true,
       
   });
 
+
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+  
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+  
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+  
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+  
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
+
+  const Register= ()=>{
+    
+      const Email = data.email
+      const Password = data.password
+      const ConfirmPassword = data.confirm_password
+      const FullName = data.fullname
+      const PhoneNumber = data.fullname
+      const PersonalBlog = data.personalblog
+
+
+    if (data.password==data.confirm_password){
+      
+      firebase.auth()
+      .createUserWithEmailAndPassword(data.email, data.password)
+      .then((user) => {
+        const fbRootRefFS=firebase.firestore();
+        const userID = user.user.uid;
+        console.log('user id : ',userID)
+        const userRef = fbRootRefFS.collection('users')
+        .doc(userID)
+
+        userRef.set({
+          Email,
+          Password,
+          ConfirmPassword,
+          FullName,
+          PhoneNumber,
+          PersonalBlog,
+        })
+        setID(userID)
+
+        Alert.alert('User account created & signed in!');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          Alert.alert('That email address is already in use!');
+        }
+    
+        if (error.code === 'auth/invalid-email') {
+          Alert.alert('That email address is invalid!');
+        }
+    
+        console.error(error);
+      }).then(navigation.navigate('Home'))
+
+    }
+    else {Alert.alert('Invalid User',
+    'Username or password is incorrect.',
+     [ {text:'Okay'}
+   ])}
+   
+  }
+  
+
+  
 
     const textInputChange =(val) =>{
       if (val.length != 0){
@@ -37,6 +154,55 @@ const SignUpScreen= ({navigation}) => {
       }
     }
 
+
+    const handleValidUser =(val)=>{
+
+      if(val.trim().length !=0){
+        setData({
+          ...data,
+          isValidUser: true,
+        });
+       
+        } else {
+          setData({
+            ...data,
+            isValidUser: false,
+          });
+      }
+
+    }
+    const handleValidPassword =(val)=>{
+
+      if(val.trim().length !=0){
+        setData({
+          ...data,
+          isValidPassword: true,
+        });
+       
+        } else {
+          setData({
+            ...data,
+            isValidPassword: false,
+          });
+      }
+
+    }
+    const handleValidConfirmPassword =(val)=>{
+
+      if(val.trim().length !=0){
+        setData({
+          ...data,
+          isValidConfirmPassword: true,
+        });
+       
+        } else {
+          setData({
+            ...data,
+            isValidConfirmPassword: false,
+          });
+      }
+
+    }
 
     const handlePasswordChange=(val) =>{
       setData({
@@ -65,9 +231,35 @@ const SignUpScreen= ({navigation}) => {
     }
 
 
+    const handleFullNameChange=(val) =>{
+      setData({
+        ...data,
+        fullname:val,
+      });
+    };
+
+    const handleBlogChange=(val) =>{
+      setData({
+        ...data,
+        personalblog:val,
+      });
+    };
+
+    const handlePhoneNumberChange=(val) =>{
+      setData({
+        ...data,
+        phonenumber:val,
+      });
+    };
+
+
+
+
 
   return (
-    <Animatable.View style={[styles.container,{backgroundColor:colors.background}]} animation="lightSpeedIn">
+    <ScrollView>
+      
+      <Animatable.View style={[styles.container,{backgroundColor:colors.background}]} animation="lightSpeedIn">
       <StatusBar backgroundColor={'pink' }barStyle='light-content'/>
       <View style ={[styles.header, { backgroundColor:'pink'}]}>
         <Text  style ={styles.text_header}>Register Now</Text>
@@ -92,6 +284,7 @@ const SignUpScreen= ({navigation}) => {
                     style ={styles.textInput} 
                     autoCapitalize="none"
                     onChangeText = {(val) => textInputChange(val)}
+                    onEndEditing={(e)=> handleValidUser(e.nativeEvent.text)}
                     />
                     {data.check_textInputChange ? 
 
@@ -105,8 +298,35 @@ const SignUpScreen= ({navigation}) => {
                    
                     : null}
         </View>
+                
+             
+
+
+
+
+{/* ////////////////// Full Name ///////////////// */}
+
+<Text  style ={styles.text_footer} >Full Name</Text>
+        <View style ={styles.action}>
+        <Icon 
+                    name="account-circle-outline"
+                    color='grey'
+                    size={25}
+                    />
+                    <TextInput 
+                    placeholder="Enter Your Full Name"
+                    style ={styles.textInput} 
+                    autoCapitalize='words'
+                    onChangeText = {(val) => handleFullNameChange(val)}
+                    />
+
+              </View>
 
              
+
+
+
+
 {/* ////////////////// Password ///////////////// */}
 <View>
         <Text  style ={styles.text_footer} >Password</Text>
@@ -122,6 +342,7 @@ const SignUpScreen= ({navigation}) => {
                     style ={styles.textInput} 
                     autoCapitalize="none"
                     onChangeText = {(val) => handlePasswordChange(val)}
+                    onEndEditing={(e)=> handleValidPassword(e.nativeEvent.text)}
                     />
 
                   <TouchableOpacity
@@ -144,8 +365,13 @@ const SignUpScreen= ({navigation}) => {
 
               </View>
 
+              {data.isValidPassword ? null :
+              <Animatable.View animation ="fadeInLeft" duration={500}>        
+           <Text style ={styles.errorMsg}>Password must be at least 8 characters</Text>
+           </Animatable.View>
+            }
 
-
+{/* ////////////////// Confirm Password ///////////////// */}
 
 
               <Text  style ={styles.text_footer} >Confirm Password</Text>
@@ -161,6 +387,7 @@ const SignUpScreen= ({navigation}) => {
                     style ={styles.textInput} 
                     autoCapitalize="none"
                     onChangeText = {(val) => handleConfirmPasswordChange(val)}
+                    onEndEditing={(e)=> handleValidConfirmPassword(e.nativeEvent.text)}
                     />
 
                   <TouchableOpacity
@@ -183,13 +410,59 @@ const SignUpScreen= ({navigation}) => {
 
               </View>
 
+              {data.isValidConfirmPassword ? null :
+              <Animatable.View animation ="fadeInLeft" duration={500}>        
+           <Text style ={styles.errorMsg}>Password must be at least 8 characters</Text>
+           </Animatable.View>
+            }
+
+{/* ////////////////// Phone ///////////////// */}
+
+<Text  style ={styles.text_footer} >Phone Number</Text>
+        <View style ={styles.action}>
+        <Icon 
+                    name="cellphone-android"
+                    color='grey'
+                    size={25}
+                    />
+                    <TextInput 
+                    placeholder="Enter Your Phone Number"
+                    style ={styles.textInput} 
+                    keyboardType='number-pad'
+                    autoCapitalize="none"
+                    onChangeText = {(val) => handlePhoneNumberChange(val)}
+                    />
+              </View>
+
+
+{/* ////////////////// Blog ///////////////// */}
+
+
+<Text  style ={styles.text_footer} >Personal Blog</Text>
+        <View style ={styles.action}>
+        <Icon 
+                    name="tooltip-text-outline"
+                    color='grey'
+                    size={25}
+                    />
+                    <TextInput 
+                    placeholder="Enter your Personal Blog"
+                    secureTextEntry={data.confirm_secureTextEntry ? true : false}
+                    style ={styles.textInput} 
+                    keyboardType='email-address'
+                    autoCapitalize="none"
+                    onChangeText = {(val) => handleBlogChange(val)}
+                    />
+              </View>
+
+
 
 
              
 
 
                   <View style = {styles.button}> 
-                   <TouchableOpacity  onPress={() => navigation.navigate('CreateProfile')} style={styles.signIn} >
+                   <TouchableOpacity  onPress={() => Register()} style={styles.signIn} >
                       <LinearGradient  colors={['white', 'pink']} style={styles.signIn}>
                       <Text style={styles.textsignIn} color ='grey'>
                         Sign Up
@@ -226,18 +499,23 @@ const SignUpScreen= ({navigation}) => {
  
             
       </View>
-     <View style={{backgroundColor:'pink', flex:1.75}}>
-              <View style={{...StyleSheet.absoluteFillObject,backgroundColor:colors.background}}>
+
+
+
+     
+ 
+    </Animatable.View>
+  
                 <View style={{backgroundColor:'pink', paddingBottom:35, paddingStart:20,paddingEnd:20, alignItems:'center', borderTopRightRadius:75}}>
                   
                 <View style = {styles.buttonSocial}> 
                   <TouchableOpacity 
                   style ={styles.signIn}
-                  onPress={()=>{navigation.navigate()}}>
+                  onPress={()=>{onGoogleButtonPress()}}>
                   <View style={{flexDirection:'row',alignItems:'center'}}>
                      <Icon name='google' style={{flex:1, paddingLeft:20}} size={25} color='tomato'/>
                      <Text style={{flex:2.5,  color:'tomato'}}>
-                       Sign In with Google
+                       Sign Up with Google
                       </Text>
                   </View>
                      
@@ -248,12 +526,12 @@ const SignUpScreen= ({navigation}) => {
                   <View style = {styles.buttonSocial}> 
                   <TouchableOpacity 
                   style ={styles.signIn}
-                  onPress={()=>{navigation.navigate()}}>
+                  onPress={()=>{onFacebookButtonPress()}}>
                                           <View style={{flexDirection:'row',alignItems:'center'}}>
 
                         <Icon name='facebook' style={{flex:1, paddingLeft:20}} size={25} color='royalblue'/>
                      <Text style={{flex:2.5,  color:'royalblue'}}>
-                        Sign In with Facebook
+                        Sign Up with Facebook
                       </Text>
                       </View>
 
@@ -262,12 +540,10 @@ const SignUpScreen= ({navigation}) => {
                   
                   </View>
 
-                </View>
           </View>
-            </View>
 
- 
-    </Animatable.View>
+    </ScrollView>
+    
   );
 };
 
@@ -335,6 +611,10 @@ const styles = StyleSheet.create({
   marginVertical:15,
   width:'90%',
   borderRadius:25
+},
+   errorMsg: {
+    color: '#FF0000',
+    fontSize: 14,
 },
 
 });
