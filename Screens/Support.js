@@ -40,7 +40,7 @@ const SupportScreen =(props) =>{
                   
       {/* //////////////// FAQ AND FEEDBACK ////////// */}
 
-      <Drawer.Section style ={styles.drawerSection}>
+      {/* <Drawer.Section style ={styles.drawerSection}>
               <DrawerItem 
               icon={({color,size}) =>(
                   <Icon 
@@ -49,11 +49,11 @@ const SupportScreen =(props) =>{
                   size={size}
                   />
               )}
-              label = "FAQ and feedback"
+              label = "Feedback"
               onPress ={()=>{props.navigation.navigate('FAQFeedback')}}
               />
         </Drawer.Section>
-                  
+                   */}
                   
                   
 
