@@ -1,13 +1,26 @@
 
 import React from 'react';
-import {View,Text,StyleSheet, Dimensions,TextInput,TouchableOpacity} from 'react-native';
+import {View,Text,StyleSheet,Alert, Dimensions,TextInput,TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth'; 
 
 
 const DeleteAccountScreen= ({navigation}) => {
+
+
+  const SignOut=()=>{
+    auth()
+.signOut()
+.then(navigation.navigate('SignInScreen'))
+Alert.alert('Account has been deleted'); 
+
+}
+
+
+
   const {colors} = useTheme();
 
   return (
@@ -48,7 +61,9 @@ const DeleteAccountScreen= ({navigation}) => {
 
           </View>
           <View style = {[styles.button, {paddingHorizontal:30}]}> 
-                  <TouchableOpacity style ={[styles.submit, {backgroundColor:'pink' ,borderRadius:75}]}>
+                  <TouchableOpacity 
+                                  onPress={()=>{SignOut()}}
+                                  style ={[styles.submit, {backgroundColor:'pink' ,borderRadius:75}]}>
                       <Text style={styles.textsubmit} color ='grey'>Submit</Text>
                   </TouchableOpacity>
                  
