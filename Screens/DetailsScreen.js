@@ -4,9 +4,48 @@ import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Share from 'react-native-share';
 import AsyncStorage from '@react-native-community/async-storage';
+import firestore from '@react-native-firebase/firestore';
 
 
 const DetailScreen= ({navigation}) => {
+
+
+  const Recipe =()=> {
+    firestore()
+    .collection('recipe')
+    .get()
+    .then(querySnapshot => {
+      // console.log('Total Recipes: ', querySnapshot.size);
+  
+      querySnapshot.forEach(documentSnapshot => {
+        // console.log('Recipe ID: ', documentSnapshot.id, documentSnapshot.data());
+        const IDS = [documentSnapshot.id]
+        console.log(IDS)
+
+        const firstApp = IDS.toString()
+
+        console.log(firstApp)
+       
+        firestore()
+        .collection('recipe')
+        .doc(IDS.toString())
+        .get()
+        .then(documentSnapshot => {
+          console.log('title: ', documentSnapshot.get('title'));
+          console.log('caption: ', documentSnapshot.get('caption'));
+          console.log('ingredients: ', documentSnapshot.get('ingredients'));
+          console.log('recipe: ', documentSnapshot.get('recipe'));
+          console.log('survings: ', documentSnapshot.get('survings'));
+
+          
+        });
+
+
+      });
+    });
+  }
+
+
 
 
   const myCustomeShare= async()=>{
