@@ -22,53 +22,53 @@ export default SavedText =[
         photo: require('../Images/CheeseCake.jpg')
 
     },
-    {
+    // {
 
-        id:4,
-        title:'Cookies',
-        caption:"feel you'r grandma's love with these yummy cookies",
-        photo: require('../Images/Cookies.jpg')
+    //     id:4,
+    //     title:'Cookies',
+    //     caption:"feel you'r grandma's love with these yummy cookies",
+    //     photo: require('../Images/Cookies.jpg')
 
-    },
-    {
+    // },
+    // {
 
-        id:5,
-        title:'Apple Pie',
-        caption:'nothing else feel like love',
-        photo: require('../Images/ApplePie.jpg')
+    //     id:5,
+    //     title:'Apple Pie',
+    //     caption:'nothing else feel like love',
+    //     photo: require('../Images/ApplePie.jpg')
 
-    },
-    {
+    // },
+    // {
 
-        id:6,
-        title:'Cup Cake',
-        caption:'have you tried this easy recipe yet!!',
-        photo: require('../Images/CupCake.jpg')
+    //     id:6,
+    //     title:'Cup Cake',
+    //     caption:'have you tried this easy recipe yet!!',
+    //     photo: require('../Images/CupCake.jpg')
 
-    },
-    {
+    // },
+    // {
 
-        id:7,
-        title:'Lemon Tart',
-        caption:'the best summer dessert',
-        photo: require('../Images/LemonTart.jpg')
+    //     id:7,
+    //     title:'Lemon Tart',
+    //     caption:'the best summer dessert',
+    //     photo: require('../Images/LemonTart.jpg')
 
-    },
-    {
+    // },
+    // {
 
-        id:8,
-        title:'Pigs In Planket',
-        caption:'enjoy this hot snak in just 20 minutes!',
-        photo: require('../Images/PigsInPlanket.jpg')
+    //     id:8,
+    //     title:'Pigs In Planket',
+    //     caption:'enjoy this hot snak in just 20 minutes!',
+    //     photo: require('../Images/PigsInPlanket.jpg')
 
-    },
-    {
+    // },
+    // {
 
-        id:9,
-        title:'Muffins',
-        caption:'easiest muffin recipie for the whole family to enjoy',
-        photo: require('../Images/Muffins.jpg')
+    //     id:9,
+    //     title:'Muffins',
+    //     caption:'easiest muffin recipie for the whole family to enjoy',
+    //     photo: require('../Images/Muffins.jpg')
 
-    },
+    // },
 
 ];
