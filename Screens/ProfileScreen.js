@@ -18,7 +18,7 @@ const ProfileScreen= ({navigation}) => {
     <SafeAreaView style={styles.container}>
      <View style={styles.userInfoSection}>
        <View style={{flexDirection:'row', marginTop:15}}>
-         <Avatar.Image source={require('../Images/Capture.png')} size={60}/>
+         {/* <Avatar.Image source={require('../Images/Capture.png')} size={60}/> */}
          <View style={{marginLeft:20}}>
            <Title style={[styles.title, {
              marginTop:15,
@@ -32,7 +32,7 @@ const ProfileScreen= ({navigation}) => {
 
            <View style={styles.userInfoSection}>
            <View style = {styles.row}>
-              <Icon name= 'email' color='#777777' size={20}/>
+              <Icon name= 'email' color='#777777' size={20} style={{marginLeft:20}}/>
               <Text style={{color:'#777777', marginLeft:20}}>mahinour1233@gmail.com</Text>
             </View>
 
