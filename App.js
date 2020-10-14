@@ -285,7 +285,7 @@ const SavedStackScreen = ({navigation}) =>{
     }
     
   }}>
-    <SavedStack.Screen name="Saved" component={Saved}  options={{
+    <SavedStack.Screen name="Favourites" component={Saved}  options={{
       headerLeft:()=> (
         <Icon.Button name="menu" size ={25}  color= {colors.text} 
         backgroundColor =  {colors.background} 
