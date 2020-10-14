@@ -125,7 +125,7 @@ const SignUpScreen= ({navigation}) => {
         }
     
         console.error(error);
-      }).then(navigation.navigate('ProfileScreen'))
+      }).then(navigation.navigate('Home'))
 
     }
     else {Alert.alert('Invalid User',
