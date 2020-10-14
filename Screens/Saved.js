@@ -39,7 +39,6 @@ const SavedScreen= ({navigation}) => {
           // console.log('recipe: ', documentSnapshot.get('recipe'));
           // console.log('survings: ', documentSnapshot.get('survings'));
 
-          const sup =documentSnapshot.get('title')
         });
 
 
@@ -84,7 +83,7 @@ const SavedScreen= ({navigation}) => {
 
         <TouchableHighlight style={styles.rowFrontVisible}>
           <View>
-          <TouchableOpacity onPress={()=>console.log(sup)}>
+          <TouchableOpacity onPress={()=>navigation.navigate('DetailsScreen')}>
           <View style = {styles.card}>
           <View style={styles.cardImgWrapper}>
             <Image   source={data.item.photo} 
