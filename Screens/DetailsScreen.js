@@ -5,10 +5,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Share from 'react-native-share';
 import AsyncStorage from '@react-native-community/async-storage';
 import firestore from '@react-native-firebase/firestore';
-
+import files from './base64';
 
 const DetailScreen= ({navigation}) => {
 
+  
 
   const Recipe =()=> {
     firestore()
@@ -51,7 +52,7 @@ const DetailScreen= ({navigation}) => {
   const myCustomeShare= async()=>{
     const shareOptions={
       message:'Check out this delicious recipe!!',
-      uri: require('../Images/Cake.jpg')
+      url: files.image1
     }
     try {
       const ShareResponse= await Share.open(shareOptions);
