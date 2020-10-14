@@ -64,8 +64,8 @@ const ProfileScreen= ({navigation}) => {
              </TouchableRipple>
              <TouchableRipple onPress ={()=>{navigation.navigate('Saved')}}>
                <View style={styles.menuItem}>
-                 <Icon name ='bookmark-outline'color='pink' size={25} />
-                 <Text style={styles.menuItemText}>Saved</Text>
+                 <Icon name ='heart-outline'color='pink' size={25} />
+                 <Text style={styles.menuItemText}>Favourites</Text>
                </View> 
              </TouchableRipple>
              <TouchableRipple onPress ={()=>{navigation.navigate('DeleteAccount')}}>
