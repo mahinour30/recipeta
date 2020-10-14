@@ -140,12 +140,12 @@ export function DrawerContent (props){
                 <DrawerItem 
                 icon={({color,size}) =>(
                     <Icon 
-                    name="bookmark-outline"
+                    name="heart-outline"
                     color={color}
                     size={size}
                     />
                 )}
-                label = "Saved"
+                label = "Favourites"
                 onPress ={()=>{props.navigation.navigate('Saved')}}
                 />
            </Drawer.Section>
@@ -179,13 +179,13 @@ export function DrawerContent (props){
                 <DrawerItem 
                 icon={({color,size}) =>(
                     <Icon 
-                    name="help-circle-outline"
+                    name="script-text-outline"
                     color={color}
                     size={size}
                     />
                 )}
-                label = "Support"
-                onPress ={()=>{props.navigation.navigate('Support')}}
+                label = "About us"
+                onPress ={()=>{props.navigation.navigate('AboutUs')}}
                 />
            </Drawer.Section>
                     
