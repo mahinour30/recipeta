@@ -33,7 +33,7 @@ const ProfileScreen= ({navigation}) => {
            <View style={styles.userInfoSection}>
            <View style = {styles.row}>
               <Icon name= 'email' color='#777777' size={20} style={{marginLeft:20}}/>
-              <Text style={{color:'#777777', marginLeft:20}}>mahinour1233@gmail.com</Text>
+              <Text style={{color:'#777777', marginLeft:20}}>mahiimalik1d@gmail.com</Text>
             </View>
 
             {/* <View style = {styles.row}>
