@@ -52,7 +52,7 @@ const ScreenTwo= ({navigation}) => {
   const myCustomeShare= async()=>{
     const shareOptions={
       message:'Check out this delicious recipe!!',
-      uri: require('../Images/Cake.jpg')
+      url: files.image1
     }
     try {
       const ShareResponse= await Share.open(shareOptions);
