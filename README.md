@@ -12,6 +12,7 @@
 #### It's a simple application that allows users to create recipes and share them with other users, share recipes via social media, and save their favorite ones.
 the onboarding screen is only shown in the first launch, other launches contain the loading and splash screens.
 #### you can log in with your E-mail or Google or facebook accounts.
+#### you can update your profile and add new profile picture.
 
 ## Screens
 
